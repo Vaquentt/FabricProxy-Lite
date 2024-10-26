@@ -3,6 +3,7 @@ package one.oktw;
 import com.mojang.authlib.GameProfile;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerLoginNetworking;
+
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.login.LoginHelloC2SPacket;
@@ -12,6 +13,8 @@ import net.minecraft.text.Text;
 import one.oktw.mixin.core.ClientConnection_AddressAccessor;
 import one.oktw.mixin.core.ServerLoginNetworkHandlerAccessor;
 import org.apache.logging.log4j.LogManager;
+
+import java.util.Optional;
 
 class PacketHandler {
     private final ModConfig config;
@@ -52,7 +55,7 @@ class PacketHandler {
             }
 
             if (config.getHackEarlySend()) {
-                handler.onHello(new LoginHelloC2SPacket(profile.getName(), profile.getId()));
+                handler.onHello(new LoginHelloC2SPacket(profile.getName(), Optional.of(profile.getId())));
             }
 
             ((ServerLoginNetworkHandlerAccessor) handler).setProfile(profile);
